@@ -26,12 +26,14 @@ var threefoldLogin = new ThreefoldLogin(
 	}
 );
 
-threefoldLogin.recover(
-	"username", //username without ".3bot"
-	"seedphrase"
+var loggedInUser = await threefoldLogin.recover(
+	"YOUR_USER_NAME", //username without ".3bot"
+	"SEED_PHRASE"
 );
 
-//Response example:
+console.log(loggedInUser);
+
+//Result:
 
 {
   doublename: 'YOUR_USER_NAME.3bot',

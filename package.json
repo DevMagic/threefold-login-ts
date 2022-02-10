@@ -1,0 +1,39 @@
+{
+  "name": "@devmagic/threefold-login-ts",
+  "version": "1.0.0",
+  "description": "Login with username and seed phrase created in Threefold Connect",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevMagic/threefold-login-ts.git"
+  },
+  "keywords": [
+    "devmagic",
+    "threefold",
+    "login",
+    "nodejs",
+    "ts",
+    "javascript",
+    "typescript"
+  ],
+  "author": "Claudio Oliveira (https://twitter.com/cldlvr)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DevMagic/threefold-login-ts/issues"
+  },
+  "homepage": "https://github.com/DevMagic/threefold-login-ts#readme",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "bip39": "^3.0.4",
+    "libsodium-wrappers": "^0.7.9",
+    "tweetnacl-util": "^0.15.1"
+  },
+  "devDependencies": {
+    "tslint": "^6.1.3",
+    "typescript": "^4.5.5"
+  }
+}

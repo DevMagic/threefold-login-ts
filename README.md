@@ -33,7 +33,7 @@ var loggedInUser = await threefoldLogin.recover(
 
 console.log(loggedInUser);
 
-//Result:
+//Output:
 
 {
   doublename: 'YOUR_USER_NAME.3bot',

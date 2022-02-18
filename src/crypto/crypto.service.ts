@@ -5,6 +5,7 @@ const { StringDecoder } = require('string_decoder');
 const decoder = new StringDecoder('utf8');
 
 import * as Axios from 'axios';
+import { ThreefoldUtils } from '../core/threefold-utils';
 const axios = Axios.default;
 
 export class CryptoService {
@@ -114,6 +115,10 @@ export class CryptoService {
       privateKey : result.privateKey,
     };
   }
+
+  generateSeedPhrase() : string {
+    return bip39.generateMnemonic(256);
+  }
   
   getEdPkInCurve(publicKey : Uint8Array) : string {
     const signingKey = sodium.crypto_sign_ed25519_pk_to_curve25519(publicKey);
@@ -135,13 +140,17 @@ export class CryptoService {
     }).join('');
   }
 
-  async getThreefoldUserInfo(doubleName : string) {
-    let result = await axios.get(`${this.apiUrl}/users/${doubleName}.3bot`, { 
-      headers: {
-        "Content-type": "application/json",
-      }
-    });
-    return result.data;
+  async signData(data : string, sk : string) {
+    var pv : Uint8Array = decodeBase64(sk);
+    var signed : Uint8Array = await sodium.crypto_sign(ThreefoldUtils.strEncodeUTF16(data), pv);
+    return encodeBase64(signed);
   }
+
+  // Future<String> signData(String data, String sk) async {
+  //   Uint8List private = base64.decode(sk);
+  //   Uint8List signed = await Sodium.cryptoSign(Uint8List.fromList(data.codeUnits), private);
   
+  //   return base64.encode(signed);
+  // }
+
 }

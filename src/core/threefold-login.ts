@@ -71,12 +71,7 @@ export class ThreefoldLogin {
 
   }
 
-  //Obter doubleName // validar
-  //Obter email // validar
-  //Gerar a frase
-  //Gerar a chave
-
-  async register(doubleNameWithout3bot : string, email : string, seedPhrase : string, sid : string = "random") {
+  async register(doubleNameWithout3bot : string, email : string, seedPhrase : string, sid : string = "random") : Promise<void> {
 
     if (!ThreefoldUtils.isValidDoubleName(doubleNameWithout3bot)) {
       throw new ThreefoldErrorException('INVALID_DOUBLENAME');
@@ -86,11 +81,6 @@ export class ThreefoldLogin {
       throw new ThreefoldErrorException('INVALID_EMAIL');
     }
 
-    //TEMP
-    seedPhrase = this.cryptoService.generateSeedPhrase();
-    console.log("SEED PHRASE!");
-    console.log(seedPhrase);
-
     var doubleName = doubleNameWithout3bot + ".3bot";
 
     if (await this.userAlreadyExists(doubleName)) {
@@ -99,8 +89,7 @@ export class ThreefoldLogin {
 
     var keys = await this.cryptoService.generateKeysFromSeedPhrase(seedPhrase);
 
-    var signData = null;
-    let registerResult = await axios.post(`${this.apiUrl}/mobileregistration`, {
+    await axios.post(`${this.apiUrl}/mobileregistration`, {
       "doubleName" : doubleName,
       "sid" : sid,
       "email" : email.toLowerCase().trim(),
@@ -110,8 +99,6 @@ export class ThreefoldLogin {
         "Content-type": "application/json",
       }
     });
-
-    //var keys = await this.cryptoService.generateKeysFromSeedPhrase();
 
   }
 

@@ -8,7 +8,7 @@ npm
 
 ## Usage
 
-Login with your Threefold Connect credentials
+Login with your Threefold Connect credentials, or register new Threefold Connect account
 ```ts
 
 const THREEFOLD_BOT_API_URL_PRODUCTION = "https://login.threefold.me/api";
@@ -26,6 +26,8 @@ var threefoldLogin = new ThreefoldLogin(
 	}
 );
 
+//Login
+
 var loggedInUser = await threefoldLogin.recover(
 	"YOUR_USER_NAME", //username without ".3bot"
 	"SEED_PHRASE"
@@ -42,5 +44,16 @@ console.log(loggedInUser);
   phone: '+55',
   privateKey: '******'
 }
+
+//Create account
+
+var register = await threefoldLogin.register(
+	"NEW_ACCOUNT_USER_NAME", //username without ".3bot"
+	"NEW_ACCOUNT_EMAIL",
+	"SEED_PHRASE", //mnemonic
+);
+
+//Account creation does not have an output. 
+//If there is an error, an exception will be thrown.
 
 ```

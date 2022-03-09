@@ -1,7 +1,7 @@
 {
-  "name": "@devmagic/threefold-login-ts",
-  "version": "1.0.0",
-  "description": "Login with username and seed phrase created in Threefold Connect",
+  "name": "@devmagic/threefold_login_ts",
+  "version": "1.1.0",
+  "description": "Register and Login with Threefold Connect",
   "main": "dist/app.js",
   "scripts": {
     "start": "tsc && node dist/app.js",

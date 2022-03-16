@@ -37,37 +37,48 @@ export class ThreefoldLogin {
       identity? : string,
       privateKey? : string,
     }> {
-    var keys = await this.cryptoService.generateKeysFromSeedPhrase(seedPhrase);
-    var keyPair = await this.cryptoService.generateKeyPairFromSeedPhrase(seedPhrase);
 
-    let userInfo = await this.getUserInfo(doubleName + ".3bot");
-
-    if (!userInfo) {
-      throw new ThreefoldErrorException(`USER_NOT_FOUND`);
-    }
-
-    if (userInfo.publicKey != keys.publicKey) {
-      throw new ThreefoldErrorException(`SEED_PHRASE_DOES_NOT_MATCH`);
-    }
-
-    var keyWords = ['email', 'phone', 'identity'];
-
-    for (let i = 0; i < keyWords.length; i++) {
-      let key = keyWords[i];
       try {
-        let pKidResult = await this.cryptoService.getPKidDoc(key, keyPair);
-        userInfo[key] = pKidResult["value"];
-      }catch(err : any) {
-        // do nothing, maybe the user not set the $key
-        if (this.showWarnings){
-          console.log("[THREEFOLD_LOGIN] Warning: could not get " + key + ".\nDetails:", err.response?.data);
+
+        var keys = await this.cryptoService.generateKeysFromSeedPhrase(seedPhrase);
+        var keyPair = await this.cryptoService.generateKeyPairFromSeedPhrase(seedPhrase);
+
+        let userInfo = await this.getUserInfo(doubleName + ".3bot");
+
+        if (!userInfo) {
+          throw new ThreefoldErrorException(`USER_NOT_FOUND`);
         }
+
+        if (userInfo.publicKey != keys.publicKey) {
+          throw new ThreefoldErrorException(`SEED_PHRASE_DOES_NOT_MATCH`);
+        }
+
+        var keyWords = ['email', 'phone', 'identity'];
+
+        for (let i = 0; i < keyWords.length; i++) {
+          let key = keyWords[i];
+          try {
+            let pKidResult = await this.cryptoService.getPKidDoc(key, keyPair);
+            userInfo[key] = pKidResult["value"];
+          }catch(err : any) {
+            // do nothing, maybe the user not set the $key
+            if (this.showWarnings){
+              console.log("[THREEFOLD_LOGIN] Warning: could not get " + key + ".\nDetails:", err.response?.data);
+            }
+          }
+        }
+
+        userInfo["privateKey"] = keys.privateKey;
+
+        return userInfo;
+
+      }catch(err : any) {
+        var status = 400;
+        if (err && err.response && err.response.status) {
+          status = err.response.status;
+        }
+        throw new ThreefoldErrorException(status == 404 ? 'USER_NOT_FOUND' : 'INVALID_LOGIN');
       }
-    }
-
-    userInfo["privateKey"] = keys.privateKey;
-
-    return userInfo;
 
   }
 
